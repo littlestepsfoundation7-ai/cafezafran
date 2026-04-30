@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zafran Cafe & Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #B8860B;
+    --gold-light: #D4A017;
+    --gold-dark: #8B6914;
+    --gold-pale: #F5E6C0;
+    --cream: #FFFDF7;
+    --warm-white: #FBF8F1;
+    --parchment: #F2EBD9;
+    --text-dark: #2C1A0E;
+    --text-mid: #5C3D1E;
+    --text-muted: #9C7B5A;
+    --border: rgba(184,134,11,0.2);
+    --border-strong: rgba(184,134,11,0.4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    transition: background 0.5s, padding 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(255,253,247,0.97);
+    backdrop-filter: blur(16px);
+    padding: 1rem 4rem;
+    box-shadow: 0 1px 0 var(--border), 0 8px 32px rgba(44,26,14,0.06);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--text-dark);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-logo span { font-style: italic; color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-mid);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+  .nav-cta {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    padding: 0.6rem 1.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.3s, color 0.3s;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+  .nav-cta:hover { background: var(--gold); color: white; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    background: var(--warm-white);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% -10%, rgba(212,160,23,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 90% 90%, rgba(184,134,11,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 30% at 10% 80%, rgba(245,230,192,0.6) 0%, transparent 50%);
+  }
+  .hero-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(184,134,11,0.04) 80px, rgba(184,134,11,0.04) 81px),
+      repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(184,134,11,0.04) 80px, rgba(184,134,11,0.04) 81px);
+  }
+  /* Decorative circles */
+  .hero-circle-1 {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,134,11,0.1);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .hero-circle-2 {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,134,11,0.06);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .hero-content { position: relative; z-index: 1; padding: 2rem; }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s forwards 0.3s;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; display: block; width: 40px; height: 0.5px; background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 1s forwards 0.5s;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s forwards 0.9s;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; justify-content: center; align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s forwards 1.2s;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: white;
+    padding: 0.9rem 2.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    border: none;
+    cursor: none;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 20px rgba(184,134,11,0.3);
+  }
+  .btn-primary:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(184,134,11,0.4); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-dark);
+    padding: 0.9rem 2rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    border: 1.5px solid rgba(44,26,14,0.25);
+    cursor: none;
+    transition: border-color 0.3s, color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s forwards 2s;
+  }
+  .hero-scroll span {
+    font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .scroll-line {
+    width: 1px; height: 46px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* Ornament */
+  .ornament {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 0.4em;
+    margin: 0 auto 1.5rem;
+    opacity: 0.6;
+  }
+
+  /* Section base */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::before {
+    content: ''; display: block; width: 28px; height: 0.5px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* About */
+  .about { background: var(--parchment); }
+  .about-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .about-text p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.95;
+    color: var(--text-mid);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2rem;
+  }
+  .stat-card {
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    text-align: center;
+    background: white;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .stat-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(184,134,11,0.1); }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-lbl {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    display: block;
+  }
+  .about-visual {
+    position: relative;
+    height: 500px;
+  }
+  .visual-frame {
+    position: absolute;
+    background: white;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(44,26,14,0.08);
+  }
+  .vf1 { width: 75%; height: 80%; top: 0; right: 0; }
+  .vf2 { width: 50%; height: 55%; bottom: 0; left: 0; border-color: var(--gold); }
+  .visual-emoji { font-size: 5rem; }
+  .vf2 .visual-emoji { font-size: 3.5rem; }
+  .visual-tag {
+    position: absolute;
+    bottom: -1rem; right: -1rem;
+    background: var(--gold);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Menu */
+  .menu { background: var(--cream); }
+  .menu-inner { max-width: 1200px; margin: 0 auto; }
+  .menu-header { margin-bottom: 3rem; }
+  .menu-tabs {
+    display: flex; gap: 0; margin-top: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    background: none; border: none;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.75rem;
+    cursor: none;
+    position: relative;
+    transition: color 0.3s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 0; right: 0; height: 2px;
+    background: var(--gold);
+    transform: scaleX(0); transition: transform 0.3s;
+  }
+  .tab-btn.active, .tab-btn:hover { color: var(--gold); }
+  .tab-btn.active::after { transform: scaleX(1); }
+
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .menu-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: white;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .menu-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0); transition: transform 0.4s;
+  }
+  .menu-card:hover { border-color: var(--border-strong); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(44,26,14,0.1); }
+  .menu-card:hover::before { transform: scaleX(1); }
+  .menu-card-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .menu-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+  }
+  .menu-card-desc {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+  .menu-card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .menu-card-price span {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    margin-left: 0.3rem;
+    font-weight: 300;
+  }
+  .ribbon {
+    background: var(--gold);
+    color: white;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.2rem 0.7rem;
+    position: absolute; top: 1rem; right: 1rem;
+  }
+
+  /* Features strip */
+  .features-strip {
+    background: var(--gold-pale);
+    border-top: 1px solid rgba(184,134,11,0.2);
+    border-bottom: 1px solid rgba(184,134,11,0.2);
+    padding: 3rem 4rem;
+  }
+  .features-inner {
+    display: flex; justify-content: space-around; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .feature-item { text-align: center; }
+  .feature-icon { font-size: 2.2rem; display: block; margin-bottom: 0.75rem; }
+  .feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+    margin-bottom: 0.2rem;
+  }
+  .feature-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+  .feature-divider {
+    width: 0.5px; height: 60px;
+    background: rgba(184,134,11,0.25);
+  }
+
+  /* Testimonials */
+  .testimonials { background: var(--warm-white); }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+  .testimonials-header { margin-bottom: 3rem; }
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .testi-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: white;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .testi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(44,26,14,0.08); }
+  .testi-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    opacity: 0.35;
+  }
+  .testi-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text-mid);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+  .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+  .author-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--gold-pale);
+    border: 1.5px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .author-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+  .author-role {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+  .stars { color: var(--gold); font-size: 0.78rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+
+  /* Reservation */
+  .reservation {
+    background: var(--parchment);
+    position: relative;
+    overflow: hidden;
+  }
+  .reservation::before {
+    content: '';
+    position: absolute; top: -40%; right: -20%;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,134,11,0.07), transparent 70%);
+  }
+  .reservation-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start;
+  }
+  .res-form { position: relative; z-index: 1; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group.full { grid-column: span 2; }
+  .form-group label {
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    padding: 0.8rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    cursor: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.08);
+  }
+  .form-group select option { background: white; }
+  .form-group textarea { resize: none; height: 100px; }
+  .form-submit {
+    margin-top: 1.5rem;
+    background: var(--gold);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    cursor: none;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(184,134,11,0.25);
+  }
+  .form-submit:hover { background: var(--gold-dark); transform: translateY(-1px); box-shadow: 0 8px 28px rgba(184,134,11,0.35); }
+  .res-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: var(--text-dark);
+  }
+  .res-info h3 em { font-style: italic; color: var(--gold); }
+  .info-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid rgba(184,134,11,0.12);
+  }
+  .info-item:last-child { border-bottom: none; }
+  .info-icon {
+    width: 42px; height: 42px;
+    border: 1px solid var(--border-strong);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(44,26,14,0.06);
+  }
+  .info-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+  }
+  .info-value {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    line-height: 1.65;
+  }
+
+  /* Footer */
+  footer {
+    background: var(--text-dark);
+    padding: 4rem;
+    border-top: 1px solid rgba(184,134,11,0.2);
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand .nav-logo {
+    display: block; margin-bottom: 1rem; font-size: 1.8rem;
+    color: var(--gold-pale);
+  }
+  .footer-brand .nav-logo span { color: var(--gold); }
+  .footer-brand p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(242,235,217,0.6);
+    line-height: 1.85;
+  }
+  .footer-col h4 {
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.7rem; }
+  .footer-col ul a {
+    color: rgba(242,235,217,0.55);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.3s;
+  }
+  .footer-col ul a:hover { color: var(--gold); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(184,134,11,0.12);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 0.75rem;
+    color: rgba(242,235,217,0.4);
+    letter-spacing: 0.05em;
+  }
+  .social-links { display: flex; gap: 0.75rem; }
+  .social-link {
+    width: 34px; height: 34px;
+    border: 1px solid rgba(184,134,11,0.3);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(242,235,217,0.5);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .social-link:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Scroll animations */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.3; transform: scaleY(0.7); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Marquee */
+  .marquee-wrap {
+    background: rgba(184,134,11,0.06);
+    border-top: 1px solid rgba(184,134,11,0.18);
+    border-bottom: 1px solid rgba(184,134,11,0.18);
+    padding: 0.9rem 0;
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex; white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-track span {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0 3rem;
+    flex-shrink: 0;
+    opacity: 0.75;
+  }
+  .marquee-track .dot {
+    color: var(--gold-light);
+    opacity: 1;
+    padding: 0;
+    letter-spacing: 0;
+  }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── EDIT PANEL ── */
+  #edit-fab {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 8000;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--gold); color: white; border: none;
+    font-size: 1.3rem; cursor: pointer;
+    box-shadow: 0 6px 24px rgba(184,134,11,0.45);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  #edit-fab:hover { transform: scale(1.1); box-shadow: 0 10px 32px rgba(184,134,11,0.55); }
+
+  #edit-overlay {
+    display: none; position: fixed; inset: 0; z-index: 7500;
+    background: rgba(44,26,14,0.35); backdrop-filter: blur(4px);
+  }
+  #edit-overlay.open { display: block; }
+
+  #edit-panel {
+    position: fixed; top: 0; right: -480px; bottom: 0; z-index: 7600;
+    width: 460px; background: white;
+    box-shadow: -8px 0 40px rgba(44,26,14,0.12);
+    display: flex; flex-direction: column;
+    transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+    font-family: 'DM Sans', sans-serif;
+  }
+  #edit-panel.open { right: 0; }
+
+  .ep-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(184,134,11,0.15);
+    background: var(--parchment);
+    flex-shrink: 0;
+  }
+  .ep-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; color: var(--text-dark); font-weight: 400;
+  }
+  .ep-header h2 span { font-style: italic; color: var(--gold); }
+  .ep-close {
+    background: none; border: none; font-size: 1.4rem;
+    color: var(--text-muted); cursor: pointer; line-height: 1;
+    transition: color 0.2s;
+  }
+  .ep-close:hover { color: var(--text-dark); }
+
+  .ep-tabs {
+    display: flex; border-bottom: 1px solid rgba(184,134,11,0.15);
+    flex-shrink: 0; background: white;
+  }
+  .ep-tab {
+    flex: 1; padding: 0.7rem 0.5rem; border: none; background: none;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted); cursor: pointer; transition: color 0.2s;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .ep-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .ep-body {
+    flex: 1; overflow-y: auto; padding: 1.5rem;
+  }
+  .ep-section { display: none; }
+  .ep-section.active { display: block; }
+
+  .ep-field { margin-bottom: 1.1rem; }
+  .ep-field label {
+    display: block; font-size: 0.62rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; font-weight: 500;
+  }
+  .ep-field input, .ep-field textarea {
+    width: 100%; padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(184,134,11,0.25); background: var(--warm-white);
+    color: var(--text-dark); font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    border-radius: 2px;
+  }
+  .ep-field input:focus, .ep-field textarea:focus {
+    border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,134,11,0.1);
+  }
+  .ep-field textarea { resize: vertical; min-height: 70px; }
+
+  .ep-divider {
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin: 1.5rem 0 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .ep-divider::after { content: ''; flex: 1; height: 1px; background: rgba(184,134,11,0.2); }
+
+  .ep-footer {
+    padding: 1rem 1.5rem; border-top: 1px solid rgba(184,134,11,0.15);
+    display: flex; gap: 0.75rem; flex-shrink: 0; background: white;
+  }
+  .ep-save {
+    flex: 1; padding: 0.75rem; background: var(--gold); color: white;
+    border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+    font-weight: 600; transition: background 0.25s;
+  }
+  .ep-save:hover { background: var(--gold-dark); }
+  .ep-reset {
+    padding: 0.75rem 1.2rem; background: none;
+    border: 1px solid rgba(184,134,11,0.3); color: var(--text-muted);
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem; letter-spacing: 0.1em; transition: border-color 0.2s, color 0.2s;
+  }
+  .ep-reset:hover { border-color: var(--gold); color: var(--gold); }
+
+  .ep-saved-msg {
+    position: fixed; bottom: 6rem; right: 2rem; z-index: 9000;
+    background: #2d6a4f; color: white; padding: 0.65rem 1.2rem;
+    font-size: 0.8rem; letter-spacing: 0.1em; border-radius: 2px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+  .ep-saved-msg.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Nav -->
+<nav id="navbar">
+  <a href="#" class="nav-logo"><span id="ed-cafe-name">Zafran</span> <span id="ed-cafe-tag" style="font-style:italic;color:var(--gold)">Café</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#reservation">Reservation</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('reservation').scrollIntoView({behavior:'smooth'})">Book a Table</button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-circle-1"></div>
+  <div class="hero-circle-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="ed-hero-eyebrow">London's Finest Café</div>
+    <h1 class="hero-title">
+      <span id="ed-hero-line1">Welcome to a World of</span>
+      <em id="ed-hero-line2">Exquisite Flavours</em>
+    </h1>
+    <p class="hero-sub" id="ed-hero-sub">Where every bite is a memorable journey — crafted with authenticity, passion & style</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="#reservation" class="btn-ghost">Reserve a Table</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Fresh Ingredients</span><span class="dot">✦</span>
+    <span>Authentic Flavours</span><span class="dot">✦</span>
+    <span>The Taste of London</span><span class="dot">✦</span>
+    <span>Desi & Continental</span><span class="dot">✦</span>
+    <span>Premium Coffee</span><span class="dot">✦</span>
+    <span>Live Kitchen</span><span class="dot">✦</span>
+    <span>Fresh Ingredients</span><span class="dot">✦</span>
+    <span>Authentic Flavours</span><span class="dot">✦</span>
+    <span>The Taste of London</span><span class="dot">✦</span>
+    <span>Desi & Continental</span><span class="dot">✦</span>
+    <span>Premium Coffee</span><span class="dot">✦</span>
+    <span>Live Kitchen</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="section-label reveal">About Us</div>
+      <h2 class="section-title reveal reveal-delay-1">A Story That Began with <em>Flavour</em></h2>
+      <p class="reveal reveal-delay-2">
+        Zafran Café has grown into one of London's most beloved South Asian dining destinations. Our passion goes beyond cooking; it's about crafting an unforgettable experience for every guest who walks through our doors.
+      </p>
+      <p class="reveal reveal-delay-3">
+        Our executive chefs draw inspiration from the rich traditions of South Asia and Europe, presenting Desi and Continental cuisines in a uniquely refined style. Every dish carries the loving care and authenticity that elevates it from mere food to something truly special.
+      </p>
+      <div class="about-stats">
+        <div class="stat-card reveal reveal-delay-2">
+          <span class="stat-num">50K+</span>
+          <span class="stat-lbl">Happy Guests</span>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <span class="stat-num">120+</span>
+          <span class="stat-lbl">Menu Items</span>
+        </div>
+        <div class="stat-card reveal reveal-delay-4">
+          <span class="stat-num">4.9★</span>
+          <span class="stat-lbl">Average Rating</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual reveal reveal-delay-2">
+      <div class="visual-frame vf1">
+        <span class="visual-emoji">🍽️</span>
+        <div class="visual-tag">Live Kitchen</div>
+      </div>
+      <div class="visual-frame vf2">
+        <span class="visual-emoji">☕</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features strip -->
+<div class="features-strip">
+  <div class="features-inner">
+    <div class="feature-item">
+      <span class="feature-icon">🌿</span>
+      <div class="feature-title">100% Fresh</div>
+      <div class="feature-sub">Daily farm-fresh vegetables</div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature-item">
+      <span class="feature-icon">👨‍🍳</span>
+      <div class="feature-title">Expert Chefs</div>
+      <div class="feature-sub">Culinary mastery</div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature-item">
+      <span class="feature-icon">🚗</span>
+      <div class="feature-title">Home Delivery</div>
+      <div class="feature-sub">At your door in 30 minutes</div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature-item">
+      <span class="feature-icon">🎉</span>
+      <div class="feature-title">Events & Parties</div>
+      <div class="feature-sub">Private dining available</div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature-item">
+      <span class="feature-icon">☕</span>
+      <div class="feature-title">Premium Coffee</div>
+      <div class="feature-sub">Single origin beans</div>
+    </div>
+  </div>
+</div>
+
+<!-- Menu -->
+<section class="menu" id="menu">
+  <div class="menu-inner">
+    <div class="menu-header">
+      <div class="section-label reveal">Our Flavours</div>
+      <h2 class="section-title reveal reveal-delay-1">A Glimpse of Our <em>Menu</em></h2>
+      <div class="menu-tabs">
+        <button class="tab-btn active" onclick="switchTab(event,'food')">Food</button>
+        <button class="tab-btn" onclick="switchTab(event,'cafe')">Café Drinks</button>
+        <button class="tab-btn" onclick="switchTab(event,'dessert')">Sweets & Desserts</button>
+      </div>
+    </div>
+
+    <div class="tab-panel active" id="tab-food">
+      <div class="menu-grid">
+        <div class="menu-card reveal">
+          <div class="ribbon">Chef's Pick</div>
+          <span class="menu-card-icon">🍛</span>
+          <div class="menu-card-name">Zafran Special Biryani</div>
+          <div class="menu-card-desc">Saffron-infused basmati rice, slow-cooked lamb, aromatic whole spices. Our signature dish.</div>
+          <div class="menu-card-price">£16.50 <span>per serving</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-1">
+          <span class="menu-card-icon">🥩</span>
+          <div class="menu-card-name">Seekh Kabab Platter</div>
+          <div class="menu-card-desc">Juicy minced beef kababs, char-grilled to perfection, served with mint chutney and raita.</div>
+          <div class="menu-card-price">£13.00 <span>6 pieces</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-2">
+          <span class="menu-card-icon">🍝</span>
+          <div class="menu-card-name">Creamy Pasta Alfredo</div>
+          <div class="menu-card-desc">Imported Italian pasta, parmesan cream sauce, grilled chicken with fresh herb garnish.</div>
+          <div class="menu-card-price">£14.50 <span>per plate</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-1">
+          <span class="menu-card-icon">🍔</span>
+          <div class="menu-card-name">Zafran Smash Burger</div>
+          <div class="menu-card-desc">Double smash patty, special sauce, caramelized onions, crispy lettuce — served with fries.</div>
+          <div class="menu-card-price">£16.50 <span>combo</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-2">
+          <div class="ribbon">Best Seller</div>
+          <span class="menu-card-icon">🥘</span>
+          <div class="menu-card-name">Karahi Gosht</div>
+          <div class="menu-card-desc">Authentic Peshawari-style karahi, fresh tomatoes, green chillies, ginger — served with naan.</div>
+          <div class="menu-card-price">£22.00 <span>full</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-3">
+          <span class="menu-card-icon">🥗</span>
+          <div class="menu-card-name">Zafran Power Bowl</div>
+          <div class="menu-card-desc">Quinoa, roasted vegetables, grilled chicken, avocado, tahini dressing — healthy and delicious.</div>
+          <div class="menu-card-price">£13.50 <span>per bowl</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-cafe">
+      <div class="menu-grid">
+        <div class="menu-card reveal">
+          <div class="ribbon">Top Pick</div>
+          <span class="menu-card-icon">☕</span>
+          <div class="menu-card-name">Zafran Signature Latte</div>
+          <div class="menu-card-desc">Single origin Ethiopian beans, velvety microfoam, house-made saffron syrup — truly unique.</div>
+          <div class="menu-card-price">£6.50 <span>per cup</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-1">
+          <span class="menu-card-icon">🧋</span>
+          <div class="menu-card-name">Desi Chai Latte</div>
+          <div class="menu-card-desc">Masala chai concentrate, oat milk, brown sugar — a western twist on a beloved classic.</div>
+          <div class="menu-card-price">£5.50 <span>per cup</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-2">
+          <span class="menu-card-icon">🍵</span>
+          <div class="menu-card-name">Matcha Rose Latte</div>
+          <div class="menu-card-desc">Premium Japanese matcha, rose water, steamed milk — Instagram-worthy and delicious.</div>
+          <div class="menu-card-price">£7.00 <span>per cup</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-1">
+          <span class="menu-card-icon">🥤</span>
+          <div class="menu-card-name">Mango Lassi Shake</div>
+          <div class="menu-card-desc">Fresh alphonso mangoes, yogurt, cream, rosewater — the pride of Pakistan.</div>
+          <div class="menu-card-price">£6.00 <span>large</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-2">
+          <span class="menu-card-icon">🧊</span>
+          <div class="menu-card-name">Cold Brew Float</div>
+          <div class="menu-card-desc">18-hour cold brew, vanilla ice cream, salted caramel drizzle — summer's finest drink.</div>
+          <div class="menu-card-price">£7.50 <span>per glass</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-3">
+          <span class="menu-card-icon">🌸</span>
+          <div class="menu-card-name">Kashmiri Pink Tea</div>
+          <div class="menu-card-desc">Traditional noon chai, cardamom, pistachios, cream — the authentic taste of Kashmir.</div>
+          <div class="menu-card-price">£5.00 <span>per cup</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-dessert">
+      <div class="menu-grid">
+        <div class="menu-card reveal">
+          <div class="ribbon">Must Try</div>
+          <span class="menu-card-icon">🍮</span>
+          <div class="menu-card-name">Saffron Crème Brûlée</div>
+          <div class="menu-card-desc">Classic French custard, real saffron strands, caramelized sugar crust — pure perfection.</div>
+          <div class="menu-card-price">£10.50 <span>per portion</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-1">
+          <span class="menu-card-icon">🍫</span>
+          <div class="menu-card-name">Molten Chocolate Cake</div>
+          <div class="menu-card-desc">Warm Belgian chocolate cake, liquid center, vanilla ice cream — every chocolate lover's dream.</div>
+          <div class="menu-card-price">£9.00 <span>per piece</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-2">
+          <span class="menu-card-icon">🍨</span>
+          <div class="menu-card-name">Gulab Jamun Cheesecake</div>
+          <div class="menu-card-desc">Creamy cheesecake, gulab jamun topping, rose petal garnish — desi fusion at its finest.</div>
+          <div class="menu-card-price">£9.50 <span>per slice</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-1">
+          <span class="menu-card-icon">🥮</span>
+          <div class="menu-card-name">Kheer Brûlée</div>
+          <div class="menu-card-desc">Traditional rice pudding, cardamom, brûléed sugar top, pistachios — a classic reinvented.</div>
+          <div class="menu-card-price">£6.00 <span>per bowl</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-2">
+          <span class="menu-card-icon">🍰</span>
+          <div class="menu-card-name">Tiramisu</div>
+          <div class="menu-card-desc">Authentic Italian tiramisu, Kahlúa-soaked ladyfingers, mascarpone cream — chef's own recipe.</div>
+          <div class="menu-card-price">£10.00 <span>per portion</span></div>
+        </div>
+        <div class="menu-card reveal reveal-delay-3">
+          <span class="menu-card-icon">🍡</span>
+          <div class="menu-card-name">Mango Panna Cotta</div>
+          <div class="menu-card-desc">Silky Italian panna cotta, fresh mango coulis, edible flowers — a seasonal special.</div>
+          <div class="menu-card-price">£8.50 <span>per glass</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials" id="testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-header">
+      <div class="section-label reveal">Guest Reviews</div>
+      <h2 class="section-title reveal reveal-delay-1">What Our <em>Guests</em> Say</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">Zafran's Biryani genuinely moved me to tears — pure nostalgia. It felt just like home-cooked food. Without a doubt, the best South Asian dining experience in London.</p>
+        <div class="testi-author">
+          <div class="author-avatar">👨</div>
+          <div>
+            <div class="author-name">James Harrington</div>
+            <div class="author-role">Food Blogger, London</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">The Saffron Latte and Molten Chocolate alone make this restaurant worth every visit. The ambiance is wonderfully cozy, and the staff are warm and attentive.</p>
+        <div class="testi-author">
+          <div class="author-avatar">👩</div>
+          <div>
+            <div class="author-name">Priya Sharma</div>
+            <div class="author-role">Content Creator, East London</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">We booked our anniversary dinner here — it was literally perfect. A private corner, candlelight, and amazing food. The best place in London for family celebrations.</p>
+        <div class="testi-author">
+          <div class="author-avatar">👨‍👩‍👦</div>
+          <div>
+            <div class="author-name">Tom & Aisha Bennett</div>
+            <div class="author-role">Regular Customers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reservation -->
+<section class="reservation" id="reservation">
+  <div class="reservation-inner">
+    <div class="res-form">
+      <div class="section-label reveal">Table Booking</div>
+      <h2 class="section-title reveal reveal-delay-1">Reserve Your <em>Table</em></h2>
+      <div class="form-grid">
+        <div class="form-group reveal">
+          <label>Your Name</label>
+          <input type="text" placeholder="e.g. Ahmed Khan">
+        </div>
+        <div class="form-group reveal reveal-delay-1">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+44 7700 000000">
+        </div>
+        <div class="form-group reveal reveal-delay-1">
+          <label>Date</label>
+          <input type="date">
+        </div>
+        <div class="form-group reveal reveal-delay-2">
+          <label>Time</label>
+          <input type="time">
+        </div>
+        <div class="form-group reveal reveal-delay-2">
+          <label>Number of Guests</label>
+          <select>
+            <option>1–2 guests</option>
+            <option>3–4 guests</option>
+            <option>5–6 guests</option>
+            <option>7–10 guests</option>
+            <option>10+ guests (Event)</option>
+          </select>
+        </div>
+        <div class="form-group reveal reveal-delay-3">
+          <label>Occasion</label>
+          <select>
+            <option>Regular Dinner</option>
+            <option>Birthday Celebration</option>
+            <option>Anniversary</option>
+            <option>Business Meeting</option>
+            <option>Family Get-together</option>
+          </select>
+        </div>
+        <div class="form-group full reveal">
+          <label>Special Requests?</label>
+          <textarea placeholder="e.g. allergies, decorations, or anything else..."></textarea>
+        </div>
+      </div>
+      <button class="form-submit reveal" onclick="handleReservation(this)">Reserve My Table ✦</button>
+    </div>
+    <div class="res-info">
+      <h3 class="reveal">Get in <em>Touch</em></h3>
+      <div class="info-item reveal reveal-delay-1">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Address</div>
+          <div class="info-value" id="ed-address">14 Brick Lane, Shoreditch<br>London, E1 6RF</div>
+        </div>
+      </div>
+      <div class="info-item reveal reveal-delay-2">
+        <div class="info-icon">⏰</div>
+        <div>
+          <div class="info-label">Opening Hours</div>
+          <div class="info-value" id="ed-hours">Monday–Thursday: 11am – 11pm<br>Friday–Sunday: 11am – 12am<br>Weekends: Open till Midnight</div>
+        </div>
+      </div>
+      <div class="info-item reveal reveal-delay-3">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Call / WhatsApp</div>
+          <div class="info-value" id="ed-phone">+44 20 7946 0321<br>+44 7700 900726</div>
+        </div>
+      </div>
+      <div class="info-item reveal reveal-delay-4">
+        <div class="info-icon">📧</div>
+        <div>
+          <div class="info-label">Email</div>
+          <div class="info-value" id="ed-email">hello@zafrancafe.co.uk<br>reservations@zafrancafe.co.uk</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo"><span id="ed-footer-name">Zafran</span> <span style="font-style:italic;color:var(--gold)" id="ed-footer-tag">Café</span></a>
+      <p id="ed-footer-desc">A place in the heart of London where every bite is a memorable experience. Come, sit, and lose yourself in a world of flavour.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#menu">Full Menu</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#reservation">Reservation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Dine In</a></li>
+        <li><a href="#">Home Delivery</a></li>
+        <li><a href="#">Takeaway</a></li>
+        <li><a href="#">Event Catering</a></li>
+        <li><a href="#">Private Dining</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Zafran Café & Restaurant. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#" class="social-link">ig</a>
+      <a href="#" class="social-link">fb</a>
+      <a href="#" class="social-link">tt</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursorRing.style.left = rx + 'px';
+    cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  document.querySelectorAll('a, button, .menu-card, .testi-card, .stat-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '18px'; cursor.style.height = '18px';
+      cursorRing.style.width = '48px'; cursorRing.style.height = '48px';
+      cursorRing.style.opacity = '0.9';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px'; cursor.style.height = '10px';
+      cursorRing.style.width = '32px'; cursorRing.style.height = '32px';
+      cursorRing.style.opacity = '0.5';
+    });
+  });
+
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Tab switching
+  function switchTab(e, tabName) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+    document.querySelectorAll('#tab-' + tabName + ' .reveal').forEach(el => {
+      el.classList.remove('visible');
+      setTimeout(() => el.classList.add('visible'), 50);
+    });
+  }
+
+  // Reservation form
+  function handleReservation(btn) {
+    const original = btn.textContent;
+    btn.textContent = '✓ Booking Confirmed!';
+    btn.style.background = '#2d6a4f';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+    }, 3000);
+  }
+</script>
+
+<!-- ── EDIT PANEL HTML ── -->
+<button id="edit-fab" title="Edit Content">✏️</button>
+<div id="edit-overlay" onclick="closePanel()"></div>
+<div id="edit-panel">
+  <div class="ep-header">
+    <h2>Edit <span>Content</span></h2>
+    <button class="ep-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="ep-tabs">
+    <button class="ep-tab active" onclick="epTab(this,'identity')">Cafe Info</button>
+    <button class="ep-tab" onclick="epTab(this,'contact')">Contact</button>
+    <button class="ep-tab" onclick="epTab(this,'hero')">Hero Text</button>
+    <button class="ep-tab" onclick="epTab(this,'about')">About</button>
+  </div>
+  <div class="ep-body">
+
+    <!-- IDENTITY TAB -->
+    <div class="ep-section active" id="ep-identity">
+      <div class="ep-divider">Cafe Name</div>
+      <div class="ep-field">
+        <label>Primary Name (e.g. Zafran)</label>
+        <input type="text" id="f-cafe-name" placeholder="Zafran">
+      </div>
+      <div class="ep-field">
+        <label>Tag / Type (e.g. Café)</label>
+        <input type="text" id="f-cafe-tag" placeholder="Café">
+      </div>
+      <div class="ep-divider">Footer</div>
+      <div class="ep-field">
+        <label>Footer Tagline</label>
+        <textarea id="f-footer-desc" rows="3"></textarea>
+      </div>
+      <div class="ep-divider">Page</div>
+      <div class="ep-field">
+        <label>Browser Tab Title</label>
+        <input type="text" id="f-page-title">
+      </div>
+    </div>
+
+    <!-- CONTACT TAB -->
+    <div class="ep-section" id="ep-contact">
+      <div class="ep-divider">Location</div>
+      <div class="ep-field">
+        <label>Address (use ↵ for new line)</label>
+        <textarea id="f-address" rows="3"></textarea>
+      </div>
+      <div class="ep-divider">Hours</div>
+      <div class="ep-field">
+        <label>Opening Hours (use ↵ for new line)</label>
+        <textarea id="f-hours" rows="4"></textarea>
+      </div>
+      <div class="ep-divider">Phone & Email</div>
+      <div class="ep-field">
+        <label>Phone / WhatsApp (use ↵ for new line)</label>
+        <textarea id="f-phone" rows="3"></textarea>
+      </div>
+      <div class="ep-field">
+        <label>Email (use ↵ for new line)</label>
+        <textarea id="f-email" rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- HERO TAB -->
+    <div class="ep-section" id="ep-hero">
+      <div class="ep-divider">Hero Section</div>
+      <div class="ep-field">
+        <label>Eyebrow Text</label>
+        <input type="text" id="f-hero-eyebrow">
+      </div>
+      <div class="ep-field">
+        <label>Title Line 1</label>
+        <input type="text" id="f-hero-line1">
+      </div>
+      <div class="ep-field">
+        <label>Title Line 2 (italic gold)</label>
+        <input type="text" id="f-hero-line2">
+      </div>
+      <div class="ep-field">
+        <label>Subtitle</label>
+        <textarea id="f-hero-sub" rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- ABOUT TAB -->
+    <div class="ep-section" id="ep-about">
+      <div class="ep-divider">Stats</div>
+      <div class="ep-field">
+        <label>Stat 1 — Number</label>
+        <input type="text" id="f-stat1-num">
+      </div>
+      <div class="ep-field">
+        <label>Stat 1 — Label</label>
+        <input type="text" id="f-stat1-lbl">
+      </div>
+      <div class="ep-field">
+        <label>Stat 2 — Number</label>
+        <input type="text" id="f-stat2-num">
+      </div>
+      <div class="ep-field">
+        <label>Stat 2 — Label</label>
+        <input type="text" id="f-stat2-lbl">
+      </div>
+      <div class="ep-field">
+        <label>Stat 3 — Number</label>
+        <input type="text" id="f-stat3-num">
+      </div>
+      <div class="ep-field">
+        <label>Stat 3 — Label</label>
+        <input type="text" id="f-stat3-lbl">
+      </div>
+      <div class="ep-field">
+        <label>Stat 4 — Number</label>
+        <input type="text" id="f-stat4-num">
+      </div>
+      <div class="ep-field">
+        <label>Stat 4 — Label</label>
+        <input type="text" id="f-stat4-lbl">
+      </div>
+    </div>
+
+  </div><!-- ep-body -->
+  <div class="ep-footer">
+    <button class="ep-save" onclick="applyEdits()">✓ Apply Changes</button>
+    <button class="ep-reset" onclick="resetEdits()">Reset</button>
+  </div>
+</div>
+<div class="ep-saved-msg" id="ep-saved-msg">✓ Changes Applied!</div>
+
+<script>
+// ── EDIT PANEL LOGIC ──
+const defaults = {
+  'cafe-name': 'Zafran',
+  'cafe-tag': 'Café',
+  'footer-desc': 'A place in the heart of London where every bite is a memorable experience. Come, sit, and lose yourself in a world of flavour.',
+  'page-title': 'Zafran Cafe & Restaurant',
+  'address': '14 Brick Lane, Shoreditch\nLondon, E1 6RF',
+  'hours': 'Monday–Thursday: 11am – 11pm\nFriday–Sunday: 11am – 12am\nWeekends: Open till Midnight',
+  'phone': '+44 20 7946 0321\n+44 7700 900726',
+  'email': 'hello@zafrancafe.co.uk\nreservations@zafrancafe.co.uk',
+  'hero-eyebrow': "London's Finest Café",
+  'hero-line1': 'Welcome to a World of',
+  'hero-line2': 'Exquisite Flavours',
+  'hero-sub': 'Where every bite is a memorable journey — crafted with authenticity, passion & style',
+  'stat1-num': '50K+', 'stat1-lbl': 'Happy Guests',
+  'stat2-num': '120+', 'stat2-lbl': 'Menu Items',
+  'stat3-num': '4.9★', 'stat3-lbl': 'Average Rating',
+  'stat4-num': '', 'stat4-lbl': '',
+};
+
+// Load saved or defaults into fields
+function loadFields() {
+  const saved = JSON.parse(localStorage.getItem('zafran-edits') || '{}');
+  Object.keys(defaults).forEach(k => {
+    const el = document.getElementById('f-' + k);
+    if (el) el.value = saved[k] !== undefined ? saved[k] : defaults[k];
+  });
+}
+
+// Apply field values to the page
+function applyEdits() {
+  const vals = {};
+  Object.keys(defaults).forEach(k => {
+    const el = document.getElementById('f-' + k);
+    if (el) vals[k] = el.value;
+  });
+  localStorage.setItem('zafran-edits', JSON.stringify(vals));
+  renderToPage(vals);
+  showSavedMsg();
+}
+
+function renderToPage(v) {
+  const set = (id, text) => { const el = document.getElementById(id); if(el) el.textContent = text; };
+  const setHTML = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
+  const nl2br = s => s.replace(/\n/g, '<br>');
+  const qs = (sel) => document.querySelectorAll(sel);
+
+  // Cafe name — update all occurrences
+  qs('#ed-cafe-name, #ed-footer-name').forEach(el => el.textContent = v['cafe-name']);
+  qs('#ed-cafe-tag, #ed-footer-tag').forEach(el => el.textContent = v['cafe-tag']);
+
+  // Page title
+  document.title = v['page-title'];
+
+  // Footer
+  set('ed-footer-desc', v['footer-desc']);
+
+  // Contact
+  setHTML('ed-address', nl2br(v['address']));
+  setHTML('ed-hours', nl2br(v['hours']));
+  setHTML('ed-phone', nl2br(v['phone']));
+  setHTML('ed-email', nl2br(v['email']));
+
+  // Hero
+  set('ed-hero-eyebrow', v['hero-eyebrow']);
+  set('ed-hero-line1', v['hero-line1']);
+  set('ed-hero-line2', v['hero-line2']);
+  set('ed-hero-sub', v['hero-sub']);
+
+  // Stats — find stat cards by order
+  const statNums = document.querySelectorAll('.stat-num');
+  const statLbls = document.querySelectorAll('.stat-lbl');
+  [1,2,3].forEach((n, i) => {
+    if(statNums[i]) statNums[i].textContent = v['stat'+n+'-num'];
+    if(statLbls[i]) statLbls[i].textContent = v['stat'+n+'-lbl'];
+  });
+}
+
+function resetEdits() {
+  localStorage.removeItem('zafran-edits');
+  loadFields();
+  renderToPage(defaults);
+  showSavedMsg('✓ Reset to defaults');
+}
+
+function openPanel() {
+  loadFields();
+  document.getElementById('edit-panel').classList.add('open');
+  document.getElementById('edit-overlay').classList.add('open');
+}
+function closePanel() {
+  document.getElementById('edit-panel').classList.remove('open');
+  document.getElementById('edit-overlay').classList.remove('open');
+}
+function epTab(btn, section) {
+  document.querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ep-section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ep-' + section).classList.add('active');
+}
+function showSavedMsg(txt) {
+  const el = document.getElementById('ep-saved-msg');
+  el.textContent = txt || '✓ Changes Applied!';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+document.getElementById('edit-fab').addEventListener('click', openPanel);
+
+// On load: apply any previously saved edits
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = JSON.parse(localStorage.getItem('zafran-edits') || '{}');
+  if(Object.keys(saved).length) renderToPage({...defaults, ...saved});
+});
+</script>
+</body>
+</html>
